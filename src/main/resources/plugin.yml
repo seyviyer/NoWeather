@@ -1,0 +1,6 @@
+name: NoWeather
+version: '1.0'
+main: me.seyviyer.noweather.NoWeather
+api-version: '1.21'
+authors: [ seyviyer ]
+description: Disables changing of weather to rain with multiple world support.
