@@ -1,0 +1,5 @@
+name: NoWeather
+version: '1.1.0-SNAPSHOT-b1'
+main: me.seyviyer.noweather.NoWeather
+api-version: '1.18'
+authors: [ seyviyer ]

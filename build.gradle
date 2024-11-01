@@ -1,0 +1,68 @@
+plugins {
+    id 'java'
+    id "com.modrinth.minotaur" version "2.+"
+}
+
+group = 'me.seyviyer'
+version = '1.1.0-SNAPSHOT-b1'
+
+repositories {
+    mavenCentral()
+    maven {
+        name = "spigotmc-repo"
+        url = "https://hub.spigotmc.org/nexus/content/repositories/snapshots/"
+    }
+    maven {
+        name = "sonatype"
+        url = "https://oss.sonatype.org/content/groups/public/"
+    }
+}
+
+dependencies {
+    compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
+}
+
+def targetJavaVersion = 17
+java {
+    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
+    sourceCompatibility = javaVersion
+    targetCompatibility = javaVersion
+    if (JavaVersion.current() < javaVersion) {
+        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+
+    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
+        options.release.set(targetJavaVersion)
+    }
+}
+
+processResources {
+    def props = [version: version]
+    inputs.properties props
+    filteringCharset 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand props
+    }
+}
+
+modrinth {
+    token = System.getenv("mrp_krsD8srDJ525BPFN8k3rFVnXstQ96nnnorvazsa5YkjFzyfWO4vcSSwVoMKX") // Remember to have the MODRINTH_TOKEN environment variable set or else this will fail - just make sure it stays private!
+    projectId = "noweather" // This can be the project ID or the slug. Either will work!
+    versionNumber = "1.1.0-SNAPSHOT-b1" // You don't need to set this manually. Will fail if Modrinth has this version already
+    versionType = "alpha" // This is the default -- can also be `beta` or `alpha`
+    uploadFile = jar // With Loom, this MUST be set to `remapJar` instead of `jar`!
+    gameVersions = ["1.18", "1.18.1", "1.18.2",
+                    "1.19", "1.19.1", "1.19.2", "1.19.3", "1.19.4",
+                    "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6",
+                    "1.21", "1.21.1", "1.21.2", "1.21.3"] // Must be an array, even with only one version
+    loaders = ["bukkit", "spigot", "paper", "purpur"] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
+    dependencies { // A special DSL for creating dependencies
+        // scope.type
+        // The scope can be `required`, `optional`, `incompatible`, or `embedded`
+        // The type can either be `project` or `version`
+    }
+}
