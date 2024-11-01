@@ -15,7 +15,7 @@ public final class NoWeather extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        getServer().getPluginManager().registerEvents(new NWWeatherChange(), this);
+        getServer().getPluginManager().registerEvents(new NWWeatherChange(this), this);
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
 
