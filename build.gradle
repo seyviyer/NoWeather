@@ -60,7 +60,7 @@ modrinth {
                     "1.20", "1.20.1", "1.20.2", "1.20.3", "1.20.4", "1.20.5", "1.20.6",
                     "1.21", "1.21.1", "1.21.2", "1.21.3"] // Must be an array, even with only one version
     loaders = ["bukkit", "spigot", "paper", "purpur"] // Must also be an array - no need to specify this if you're using Loom or ForgeGradle
-
+    changelog = project.changelog
     syncBodyFrom = rootProject.file("README.md").text
     dependencies { // A special DSL for creating dependencies
         // scope.type
