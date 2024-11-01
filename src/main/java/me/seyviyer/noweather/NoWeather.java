@@ -21,7 +21,4 @@ public final class NoWeather extends JavaPlugin implements Listener {
 
     }
 
-    @Override
-    public void onDisable() {
-    }
 }
