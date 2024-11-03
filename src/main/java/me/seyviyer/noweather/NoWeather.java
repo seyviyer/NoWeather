@@ -1,5 +1,6 @@
 package me.seyviyer.noweather;
 
+import me.seyviyer.noweather.commands.NWCommands;
 import me.seyviyer.noweather.config.NWConfig;
 import me.seyviyer.noweather.events.NWWeatherChange;
 import org.bukkit.event.Listener;
@@ -16,8 +17,8 @@ public final class NoWeather extends JavaPlugin implements Listener {
     @Override
     public void onEnable() {
         getServer().getPluginManager().registerEvents(new NWWeatherChange(this), this);
-        getConfig().options().copyDefaults(true);
-        saveDefaultConfig();
+        getConfigManager().loadConfiguration();
+        getCommand("noweather").setExecutor(new NWCommands(this));
 
     }
 
