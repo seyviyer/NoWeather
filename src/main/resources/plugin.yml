@@ -1,5 +1,13 @@
 name: NoWeather
-version: '1.1.0-SNAPSHOT-b1'
+version: ${version}
 main: me.seyviyer.noweather.NoWeather
 api-version: '1.18'
 authors: [ seyviyer ]
+
+commands:
+  noweather:
+    description: Allows you to add or remove world to disable weather.
+    default: op
+permissions:
+  noweather.admin:
+    description: Allows you to use /noweather command.
