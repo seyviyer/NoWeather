@@ -5,15 +5,13 @@ import me.seyviyer.noweather.NoWeather;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NWConfig {
 
+    private File configFile;
     private FileConfiguration configuration;
 
     List<String> disabledWorlds = new ArrayList<>();
@@ -45,7 +43,8 @@ public class NWConfig {
                 plugin.getServer().getLogger().severe("There is something wrong when making the configuration file!");
             }
 
-        this.configuration = (FileConfiguration) YamlConfiguration.loadConfiguration(resourceFile);
+        this.configFile = resourceFile;
+        this.configuration = YamlConfiguration.loadConfiguration(configFile);
 
     }
 
@@ -53,17 +52,54 @@ public class NWConfig {
         return this.configuration;
     }
 
+    public void saveConfiguration() {
+        try {
+            configuration.save(configFile);
+        } catch (IOException e) {
+            e.printStackTrace();
+            plugin.getLogger().severe("There is a problem saving the configuration file!");
+        }
+    }
+
     public List<String> getDisabledWorlds() {
-        disabledWorlds.addAll(plugin.getConfig().getStringList("worlds"));
+
+        for(String world : getConfiguration().getStringList("worlds")) {
+            if(!disabledWorlds.contains(world)) {
+                disabledWorlds.add(world);
+            }
+        }
+    //    disabledWorlds.addAll(getConfiguration().getStringList("worlds"));
         return disabledWorlds;
     }
 
-    public void addDisabledWorld(String world) {
-        disabledWorlds.add(world);
+    /*
+        Returns true if adding the world to the list is successful.
+        Returns false if it already exists and will not add.
+     */
+    public boolean addDisabledWorld(String world) {
+        if(!getDisabledWorlds().contains(world)) {
+            getDisabledWorlds().add(world);
+            getConfiguration().set("worlds", getDisabledWorlds());
+            saveConfiguration();
+            return true;
+        } else {
+            return false;
+        }
     }
 
-    public void removeDisabledWorld(String world) {
-        disabledWorlds.remove(world);
+    /*
+        Returns true if remove the world to the list is successful.
+        Returns false if it doesn't exist and will not remove.
+     */
+    public boolean removeDisabledWorld(String world) {
+        if(getDisabledWorlds().contains(world)) {
+            getDisabledWorlds().remove(world);
+            getConfiguration().set("worlds", getDisabledWorlds());
+            saveConfiguration();
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
